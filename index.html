@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>С годовщиной, мой милый!!</title>
+    <style>
+        /* --- БАЗА И РОМАНТИЧНЫЙ ФОН --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* --- ЗАКРЫТАЯ ОТКРЫТКА --- */
+        .card {
+            background: #fff;
+            padding: 40px 50px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(255, 71, 87, 0.2);
+            text-align: center;
+            cursor: pointer;
+            border: 4px solid #ffb6c1;
+            animation: pulseCard 2s infinite;
+            position: absolute;
+            z-index: 10;
+            transition: all 0.5s ease;
+        }
+
+        .card:active { transform: scale(0.95); }
+
+        .card h1 {
+            color: #ff4757;
+            font-size: 32px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .card p {
+            color: #ff7f8e;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        @keyframes pulseCard {
+            0% { transform: scale(1); box-shadow: 0 15px 35px rgba(255, 71, 87, 0.2); }
+            50% { transform: scale(1.05); box-shadow: 0 20px 45px rgba(255, 71, 87, 0.4); }
+            100% { transform: scale(1); box-shadow: 0 15px 35px rgba(255, 71, 87, 0.2); }
+        }
+
+        /* --- СЦЕНА --- */
+        .scene {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100vh;
+        }
+
+        .scene.active { display: flex; }
+
+        /* --- НАРИСОВАННЫЙ КОТЕНОК --- */
+        .kitten {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin-bottom: 40px;
+            /* Выпрыгивает снизу */
+            animation: popUp 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes popUp {
+            0% { transform: translateY(300px) scale(0.5); opacity: 0; }
+            100% { transform: translateY(0) scale(1); opacity: 1; }
+        }
+
+        /* Тело котенка */
+        .head {
+            position: absolute;
+            top: 20px;
+            left: 15px;
+            width: 170px;
+            height: 150px;
+            background: #ffffff;
+            border: 4px solid #2f3542;
+            border-radius: 50% 50% 45% 45%;
+            z-index: 2;
+        }
+
+        /* Ушки */
+        .ear {
+            position: absolute;
+            top: -15px;
+            width: 0;
+            height: 0;
+            border-left: 30px solid transparent;
+            border-right: 30px solid transparent;
+            border-bottom: 55px solid #ffffff;
+            z-index: 1;
+        }
+        .ear.left { left: 5px; transform: rotate(-15deg); }
+        .ear.right { right: 5px; transform: rotate(15deg); }
+        
+        /* Розовая внутренность ушек (рисуем поверх) */
+        .ear::after {
+            content: '';
+            position: absolute;
+            top: 12px; left: -18px;
+            width: 0; height: 0;
+            border-left: 18px solid transparent;
+            border-right: 18px solid transparent;
+            border-bottom: 35px solid #ffb6c1;
+        }
+
+        /* Глазки */
+        .eye {
+            position: absolute;
+            top: 55px;
+            width: 24px;
+            height: 32px;
+            background: #2f3542;
+            border-radius: 50%;
+            z-index: 3;
+        }
+        .eye.left { left: 35px; }
+        .eye.right { right: 35px; }
+        
+        /* Блики в глазах */
+        .eye::after {
+            content: '';
+            position: absolute;
+            top: 5px; left: 6px;
+            width: 8px; height: 8px;
+            background: #ffffff;
+            border-radius: 50%;
+        }
+
+        /* Щечки */
+        .cheek {
+            position: absolute;
+            top: 95px;
+            width: 26px;
+            height: 14px;
+            background: #ff9a9e;
+            border-radius: 50%;
+            opacity: 0.8;
+            z-index: 3;
+        }
+        .cheek.left { left: 18px; }
+        .cheek.right { right: 18px; }
+
+        /* Носик */
+        .nose {
+            position: absolute;
+            top: 85px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 10px;
+            height: 7px;
+            background: #ff9a9e;
+            border-radius: 50%;
+            z-index: 3;
+        }
+
+        /* Ротик (перевернутая буква V) */
+        .mouth {
+            position: absolute;
+            top: 94px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 14px;
+            height: 8px;
+            border-bottom: 3px solid #2f3542;
+            border-radius: 50%;
+            z-index: 3;
+        }
+
+        /* Усики */
+        .whiskers {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 3;
+        }
+        .whiskers::before, .whiskers::after {
+            content: '';
+            position: absolute;
+            top: 90px;
+            width: 30px;
+            height: 2px;
+            background: #2f3542;
+        }
+        .whiskers::before { left: -10px; transform: rotate(10deg); }
+        .whiskers::after { right: -10px; transform: rotate(-10deg); }
+
+        /* ЛАПКА */
+        .paw {
+            position: absolute;
+            bottom: -10px;
+            right: 10px;
+            width: 55px;
+            height: 55px;
+            background: #ffffff;
+            border: 4px solid #2f3542;
+            border-radius: 50%;
+            z-index: 4;
+            opacity: 0;
+            transform: translateY(30px);
+            
+            /* Подушечки на лапке */
+            background-image: radial-gradient(circle, #ff9a9e 20%, transparent 25%);
+            background-size: 15px 15px;
+            background-position: center 25px;
+            background-repeat: no-repeat;
+        }
+
+        /* Анимация стука лапкой (тянется к экрану) */
+        .paw.tap {
+            animation: tapScreen 0.6s ease-in-out;
+        }
+
+        @keyframes tapScreen {
+            0% { transform: translateY(30px) scale(1); opacity: 0; }
+            50% { transform: translateY(-40px) scale(1.2); opacity: 1; z-index: 10; }
+            100% { transform: translateY(30px) scale(1); opacity: 0; }
+        }
+
+        /* --- ТЕКСТ ПРИЗНАНИЯ --- */
+        .love-text {
+            font-size: 28px;
+            color: #ffffff;
+            font-weight: bold;
+            text-align: center;
+            text-shadow: 0 4px 15px rgba(255, 71, 87, 0.6);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 1s ease;
+            padding: 0 20px;
+        }
+
+        .love-text.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- НАРИСОВАННЫЕ СЕРДЕЧКИ (БЕЗ ЭМОДЗИ) --- */
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #ff4757;
+            bottom: -50px;
+            pointer-events: none;
+            animation: floatUp 2.5s linear forwards;
+            z-index: 1;
+        }
+
+        /* Рисуем сердечко из двух кругов и квадрата */
+        .heart::before, .heart::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #ff4757;
+            border-radius: 50%;
+        }
+        .heart::before { top: -10px; left: 0; }
+        .heart::after { left: 10px; top: 0; }
+        
+        /* Анимация полета сердечка */
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(-45deg) scale(0.8); opacity: 1; }
+            100% { transform: translateY(-110vh) rotate(-45deg) scale(1.5); opacity: 0; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Экран 1 -->
+    <div id="card" class="card" onclick="startSurprise()">
+        <h1>Открой</h1>
+        <p>нажми на меня</p>
+    </div>
+
+    <!-- Экран 2 -->
+    <div id="scene" class="scene">
+        <div class="kitten">
+            <div class="ear left"></div>
+            <div class="ear right"></div>
+            <div class="head">
+                <div class="whiskers"></div>
+                <div class="eye left"></div>
+                <div class="eye right"></div>
+                <div class="cheek left"></div>
+                <div class="cheek right"></div>
+                <div class="nose"></div>
+                <div class="mouth"></div>
+            </div>
+            <div id="paw" class="paw"></div>
+        </div>
+        
+        <div id="loveText" class="love-text">я тебя люблю, мой милый</div>
+    </div>
+
+    <script>
+        function startSurprise() {
+            // 1. Скрываем открытку
+            const card = document.getElementById('card');
+            card.style.opacity = '0';
+            card.style.transform = 'scale(0.5)';
+            setTimeout(() => card.style.display = 'none', 500);
+
+            // 2. Показываем сцену
+            const scene = document.getElementById('scene');
+            scene.classList.add('active');
+
+            // 3. Через 1 сек. котенок стучит лапкой
+            setTimeout(() => {
+                document.getElementById('paw').classList.add('tap');
+            }, 1000);
+
+            // 4. Через 1.5 сек. появляется текст и сердечки
+            setTimeout(() => {
+                document.getElementById('loveText').classList.add('show');
+                createHearts();
+            }, 1500);
+        }
+
+        function createHearts() {
+            // Создаем много сердечек
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.classList.add('heart');
+                    
+                    // Случайная позиция по горизонтали
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    
+                    // Случайный размер и скорость для естественности
+                    const scale = Math.random() * 0.8 + 0.5;
+                    heart.style.transform = `scale(${scale})`;
+                    heart.style.animationDuration = (Math.random() * 1.5 + 1.5) + 's';
+                    
+                    document.body.appendChild(heart);
+
+                    // Удаляем элемент после завершения полета
+                    setTimeout(() => heart.remove(), 3000);
+                }, i * 150); // Каждое следующее с задержкой
+            }
+        }
+    </script>
+
+</body>
+</html>
